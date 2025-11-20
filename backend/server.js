@@ -3,6 +3,12 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { connectDB } from "./config/db.js";
 
+// ROUTES IMPORT
+import eventRoutes from "./routes/eventRoutes.js";
+import lostFoundRoutes from "./routes/lostFoundRoutes.js";
+import marketplaceRoutes from "./routes/marketplaceRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+
 dotenv.config();
 const app = express();
 
@@ -17,6 +23,12 @@ app.get("/api/test", (req, res) => {
     time: new Date()
   });
 });
+
+// ROUTE MOUNTING
+app.use("/api/events", eventRoutes);
+app.use("/api/lostfound", lostFoundRoutes);
+app.use("/api/marketplace", marketplaceRoutes);
+app.use("/api/users", userRoutes);
 
 const PORT = process.env.PORT || 5000;
 
