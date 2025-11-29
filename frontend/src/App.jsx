@@ -1,5 +1,5 @@
 import { useState } from 'react'
-
+import { AuthProvider } from './context/AuthContext'
 import './App.css'
 import { AppRouter } from './router/AppRouter'
 
@@ -8,7 +8,9 @@ function App() {
 
   return (
     <>
+    <AuthProvider>
       <AppRouter/>
+      </AuthProvider>
           </>
   )
 }
