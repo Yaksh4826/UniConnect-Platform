@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { API_BASE_URL } from "../config";
 
 export const EventsPage = () => {
   const navigate = useNavigate();
@@ -10,13 +11,14 @@ export const EventsPage = () => {
   const { user, token } = useAuth();
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/events")
+    fetch(`${API_BASE_URL}/api/events`)
       .then((res) => res.json())
       .then((data) => setEvents(data))
       .catch((err) => console.error(err));
   }, []);
 
-  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,9 +28,9 @@ export const EventsPage = () => {
       return;
     }
     try {
-      const res = await fetch("http://localhost:5000/api/events", {
+      const res = await fetch(`${API_BASE_URL}/api/events`, {
         method: "POST",
-        headers: { 
+        headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token || ""}`,
         },
@@ -36,9 +38,9 @@ export const EventsPage = () => {
       });
       if (res.ok) {
         alert("Event created!");
+        const updated = await res.json();
         setFormData({ title: "", description: "", date: "" });
         setShowForm(false);
-        const updated = await res.json();
         setEvents([...events, updated]);
       } else alert("Error creating event");
     } catch (err) {
@@ -48,9 +50,7 @@ export const EventsPage = () => {
   };
 
   return (
-    <div
-      className="p-12 min-h-screen bg-gradient-to-br from-[#eef2ff] via-white to-[#e0f4ff]"
-    >
+    <div className="p-12 min-h-screen bg-gradient-to-br from-[#eef2ff] via-white to-[#e0f4ff]">
       {/* Header + Create Button */}
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-4xl font-extrabold text-[#130745]">Events</h2>
@@ -72,10 +72,15 @@ export const EventsPage = () => {
       {/* Event Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {events.map((event) => (
-          <div key={event._id} className="p-4 border rounded-xl shadow hover:shadow-lg transition">
+          <div
+            key={event._id}
+            className="p-4 border rounded-xl shadow hover:shadow-lg transition"
+          >
             <h3 className="text-xl font-bold text-[#130745]">{event.title}</h3>
             <p className="text-gray-700 mt-2">{event.description}</p>
-            <p className="mt-2 font-semibold">Date: {new Date(event.date).toLocaleDateString()}</p>
+            <p className="mt-2 font-semibold">
+              Date: {new Date(event.date).toLocaleDateString()}
+            </p>
           </div>
         ))}
       </div>

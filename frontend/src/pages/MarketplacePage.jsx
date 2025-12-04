@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef, useMemo } from "react";
 import { useAuth } from "../context/AuthContext";
 import { io } from "socket.io-client";
+import { API_BASE_URL } from "../config";
 
 export const MarketplacePage = () => {
   const { user, token } = useAuth(); // ⭐ Needed to attach postedBy
@@ -25,7 +26,7 @@ export const MarketplacePage = () => {
   // ============================
   useEffect(() => {
     let isMounted = true;
-    fetch("http://localhost:5000/api/marketplace")
+    fetch(`${API_BASE_URL}/api/marketplace`)
       .then((res) => res.json())
       .then((data) => {
         if (!isMounted) return;
@@ -49,7 +50,7 @@ export const MarketplacePage = () => {
     if (!user?._id) return;
 
     // Connect to socket.io with userId for identification
-    const socket = io("http://localhost:5000", {
+    const socket = io(API_BASE_URL, {
       query: { userId: user._id },
     });
     socketRef.current = socket;
@@ -89,7 +90,7 @@ export const MarketplacePage = () => {
     return () => {
       socket.disconnect();
     };
-  }, [user?._id]);
+  }, [user?._id]); // keep same deps to avoid reconnect loops
 
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -107,13 +108,13 @@ export const MarketplacePage = () => {
 
     const body = {
       ...formData,
-      postedBy: user.id, // ⭐ VERY IMPORTANT
+      postedBy: user?.id || user?._id, // ⭐ safer: support both id / _id
     };
 
     try {
-      const res = await fetch("http://localhost:5000/api/marketplace", {
+      const res = await fetch(`${API_BASE_URL}/api/marketplace`, {
         method: "POST",
-        headers: { 
+        headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
@@ -151,11 +152,11 @@ export const MarketplacePage = () => {
       alert("You cannot buy your own item.");
       return;
     }
-    
-    // In a real app, this would redirect to payment gateway or chat
-    const confirmBuy = window.confirm(`Do you want to buy "${item.title}" for $${item.price}? \n\nThis will notify the seller.`);
+
+    const confirmBuy = window.confirm(
+      `Do you want to buy "${item.title}" for $${item.price}? \n\nThis will notify the seller.`
+    );
     if (confirmBuy) {
-      // Emit socket event to notify seller if online
       if (socketRef.current) {
         socketRef.current.emit("buy_request", {
           sellerId,
@@ -178,7 +179,6 @@ export const MarketplacePage = () => {
     const sellerId = item.postedBy?._id || item.postedBy;
     const sellerName = item.postedBy?.fullName || "Seller";
     setChatRecipient({ id: sellerId, name: sellerName });
-    // Optional: seed a friendly message
     setChatInput(`Hi, I'm interested in "${item.title}".`);
   };
 
@@ -199,12 +199,10 @@ export const MarketplacePage = () => {
       fromName: user?.fullName || "Buyer",
     };
 
-    // Emit via socket
     if (socketRef.current) {
       socketRef.current.emit("chat_message", payload);
     }
 
-    // Add to local chat
     setChatMessages((prev) => [
       {
         id: Date.now(),
@@ -219,7 +217,6 @@ export const MarketplacePage = () => {
     setChatInput("");
   };
 
-  // Memoize rendered items to avoid re-renders on chat changes
   const renderedItems = useMemo(
     () =>
       items.map((item) => (
@@ -227,7 +224,6 @@ export const MarketplacePage = () => {
           key={item._id || item.id || item.title}
           className="p-4 border rounded-xl shadow hover:shadow-lg transition bg-white flex flex-col h-full"
         >
-          {/* Image */}
           {item.image && (
             <div className="w-full h-48 mb-4 overflow-hidden rounded-md bg-gray-100">
               <img
@@ -262,9 +258,7 @@ export const MarketplacePage = () => {
   );
 
   return (
-    <div
-      className="p-12 min-h-screen bg-gradient-to-br from-[#f0f4ff] via-white to-[#eaf7ff]"
-    >
+    <div className="p-12 min-h-screen bg-gradient-to-br from-[#f0f4ff] via-white to-[#eaf7ff]">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-4xl font-extrabold text-[#130745]">Marketplace</h2>
 
@@ -282,7 +276,9 @@ export const MarketplacePage = () => {
         {/* ITEMS LIST */}
         <div className="xl:col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {loading ? (
-            <div className="col-span-full text-center text-gray-500 py-10">Loading items...</div>
+            <div className="col-span-full text-center text-gray-500 py-10">
+              Loading items...
+            </div>
           ) : (
             renderedItems
           )}
@@ -305,16 +301,27 @@ export const MarketplacePage = () => {
 
           {/* Notifications List */}
           <div className="mb-4">
-            <h4 className="text-sm font-semibold text-gray-700 mb-2">Purchase Requests</h4>
+            <h4 className="text-sm font-semibold text-gray-700 mb-2">
+              Purchase Requests
+            </h4>
             <div className="max-h-32 overflow-y-auto space-y-2">
               {notifications.length === 0 ? (
-                <p className="text-xs text-gray-500">No purchase requests yet.</p>
+                <p className="text-xs text-gray-500">
+                  No purchase requests yet.
+                </p>
               ) : (
                 notifications.map((notif) => (
-                  <div key={notif.id} className="p-3 rounded-lg bg-blue-50 border border-blue-100 text-sm text-blue-900">
+                  <div
+                    key={notif.id}
+                    className="p-3 rounded-lg bg-blue-50 border border-blue-100 text-sm text-blue-900"
+                  >
                     <div className="font-semibold">{notif.itemTitle}</div>
-                    <div className="text-xs text-blue-700">From: {notif.buyerName}</div>
-                    <div className="text-[11px] text-gray-500 mt-1">{notif.time}</div>
+                    <div className="text-xs text-blue-700">
+                      From: {notif.buyerName}
+                    </div>
+                    <div className="text-[11px] text-gray-500 mt-1">
+                      {notif.time}
+                    </div>
                   </div>
                 ))
               )}
@@ -326,7 +333,10 @@ export const MarketplacePage = () => {
             <div className="mb-2 text-sm text-gray-600">
               {chatRecipient ? (
                 <>
-                  Chatting with <span className="font-semibold text-[#130745]">{chatRecipient.name}</span>
+                  Chatting with{" "}
+                  <span className="font-semibold text-[#130745]">
+                    {chatRecipient.name}
+                  </span>
                 </>
               ) : (
                 "Select a seller to start chat."
@@ -339,7 +349,11 @@ export const MarketplacePage = () => {
                 chatMessages.map((msg) => (
                   <div
                     key={msg.id}
-                    className={`p-2 rounded-lg text-sm ${msg.fromSelf ? "bg-green-50 border border-green-100 self-end" : "bg-white border border-gray-200"}`}
+                    className={`p-2 rounded-lg text-sm ${
+                      msg.fromSelf
+                        ? "bg-green-50 border border-green-100 self-end"
+                        : "bg-white border border-gray-200"
+                    }`}
                   >
                     <div className="text-[11px] text-gray-500 mb-0.5">
                       {msg.fromSelf ? "You" : msg.fromName} · {msg.time}
@@ -354,7 +368,9 @@ export const MarketplacePage = () => {
                 value={chatInput}
                 onChange={(e) => setChatInput(e.target.value)}
                 className="flex-grow border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#130745]"
-                placeholder={chatRecipient ? "Type a message..." : "Select a seller first"}
+                placeholder={
+                  chatRecipient ? "Type a message..." : "Select a seller first"
+                }
               />
               <button
                 onClick={sendChatMessage}

@@ -1,19 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { UploadDropzone } from "@bytescale/upload-widget-react";
-import { useEffect } from "react";
+import { API_BASE_URL } from "../../config";
 
 export const LostItemForm = () => {
   const navigate = useNavigate();
   const { user, token } = useAuth();
+
   useEffect(() => {
     if (!user) {
       alert("Please login to create lost/found items.");
       navigate("/login");
     }
   }, [user, navigate]);
-
 
   const [formData, setFormData] = useState({
     itemName: "",
@@ -27,7 +27,7 @@ export const LostItemForm = () => {
   });
 
   // BYTESCALE OPTIONS
-  // NOTE: "free" API key is for demo/testing. 
+  // NOTE: "free" API key is for demo/testing.
   // Files deleted after 24h. Replace with your real key in production.
   const options = {
     apiKey: "free", // or your public_... key
@@ -56,7 +56,7 @@ export const LostItemForm = () => {
     };
 
     try {
-      const response = await fetch("http://localhost:5000/api/lostfound", {
+      const response = await fetch(`${API_BASE_URL}/api/lostfound`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -73,7 +73,6 @@ export const LostItemForm = () => {
 
       alert("Item reported successfully!");
       navigate("/lostFound");
-
     } catch (error) {
       console.error("Submit error:", error);
       alert("Server error");
@@ -83,16 +82,16 @@ export const LostItemForm = () => {
   return (
     <div className="w-full min-h-screen flex justify-center items-center bg-gray-100">
       <div className="w-full max-w-2xl bg-white p-10 rounded-2xl shadow-xl border border-gray-200">
-
         <h2 className="text-3xl font-extrabold text-center text-[#130745] mb-6">
           Report Lost or Found Item
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-6 text-lg">
-
           {/* Type Selection */}
           <div>
-            <label className="block font-semibold mb-1">I am reporting a...</label>
+            <label className="block font-semibold mb-1">
+              I am reporting a...
+            </label>
             <select
               name="type"
               value={formData.type}
@@ -152,7 +151,9 @@ export const LostItemForm = () => {
 
           {/* Location */}
           <div>
-            <label className="block font-semibold mb-1">Location {formData.type === 'lost' ? 'Lost' : 'Found'}</label>
+            <label className="block font-semibold mb-1">
+              Location {formData.type === "lost" ? "Lost" : "Found"}
+            </label>
             <input
               type="text"
               name="location"
@@ -166,14 +167,16 @@ export const LostItemForm = () => {
 
           {/* Image Upload (Bytescale) */}
           <div>
-            <label className="block font-semibold mb-2">Upload Image (Optional)</label>
-            
+            <label className="block font-semibold mb-2">
+              Upload Image (Optional)
+            </label>
+
             {formData.image ? (
               <div className="relative w-full h-64 rounded-lg overflow-hidden border border-gray-300">
-                <img 
-                  src={formData.image} 
-                  alt="Uploaded" 
-                  className="w-full h-full object-cover" 
+                <img
+                  src={formData.image}
+                  alt="Uploaded"
+                  className="w-full h-full object-cover"
                 />
                 <button
                   type="button"
@@ -188,7 +191,9 @@ export const LostItemForm = () => {
               <div className="h-64 border-2 border-dashed border-gray-300 rounded-lg overflow-hidden">
                 <UploadDropzone
                   options={options}
-                  onUpdate={({ uploadedFiles }) => handleImageUpload(uploadedFiles)}
+                  onUpdate={({ uploadedFiles }) =>
+                    handleImageUpload(uploadedFiles)
+                  }
                   width="100%"
                   height="100%"
                 />
@@ -218,7 +223,6 @@ export const LostItemForm = () => {
             Submit Report
           </button>
         </form>
-
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../../config";
 
 export const CreateMarketplaceForm = () => {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ export const CreateMarketplaceForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/api/marketplace", {
+      const response = await fetch(`${API_BASE_URL}/api/marketplace`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -93,7 +94,7 @@ export const CreateMarketplaceForm = () => {
 
           <button
             type="submit"
-            className="w-full py-3 rounded-xl text-white font-semibold text-lg bg-linear-to-r from-[#130745] to-[#1a0a5e] hover:opacity-90 mt-4 shadow-md"
+            className="w-full py-3 rounded-xl text-white font-semibold text-lg bg-gradient-to-r from-[#130745] to-[#1a0a5e] hover:opacity-90 mt-4 shadow-md"
           >
             Create Item
           </button>

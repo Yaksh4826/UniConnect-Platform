@@ -17,10 +17,22 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app);
 
-
 // Middlewares
 app.use(cors());
 app.use(express.json());
+
+// ROOT & HEALTH ROUTES
+app.get("/", (req, res) => {
+  res.send("API is running ✅");
+});
+
+app.get("/api/health", (req, res) => {
+  res.json({
+    status: "ok",
+    message: "Server and DB are healthy ✅",
+    time: new Date()
+  });
+});
 
 // Test route
 app.get("/api/test", (req, res) => {

@@ -2,12 +2,10 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../config";
 
 const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
-
-// Central place for API base
-const API_BASE = "http://localhost:5000/api";
 
 export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
@@ -46,7 +44,7 @@ export const AuthProvider = ({ children }) => {
   // ============================================================
   const register = async (fullName, email, password, role) => {
     try {
-      const res = await axios.post(`${API_BASE}/users/register`, {
+      const res = await axios.post(`${API_BASE_URL}/api/users/register`, {
         fullName,
         email,
         password,
@@ -66,7 +64,7 @@ export const AuthProvider = ({ children }) => {
   // ============================================================
   const login = async (email, password) => {
     try {
-      const res = await axios.post(`${API_BASE}/users/login`, {
+      const res = await axios.post(`${API_BASE_URL}/api/users/login`, {
         email,
         password,
       });
@@ -76,7 +74,7 @@ export const AuthProvider = ({ children }) => {
       setUser(loggedInUser);
       setToken(jwtToken);
 
-      // Save to localStorage
+      // Also save directly (effect will keep them in sync)
       localStorage.setItem("user", JSON.stringify(loggedInUser));
       localStorage.setItem("token", jwtToken);
 
@@ -88,7 +86,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   // ============================================================
-  // LOGOUT  (FIXED ✔ FULL RESET + REDIRECT)
+  // LOGOUT  (FULL RESET + REDIRECT)
   // ============================================================
   const logout = () => {
     // Remove from localStorage

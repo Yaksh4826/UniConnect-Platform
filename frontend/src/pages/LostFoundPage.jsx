@@ -4,6 +4,7 @@ import { Button } from "../components/commonComponents/GradientButton";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { FaSearch } from "react-icons/fa";
+import { API_BASE_URL } from "../config";
 
 export const LostFoundPage = () => {
   const [items, setItems] = useState([]);
@@ -11,24 +12,24 @@ export const LostFoundPage = () => {
   const navigate = useNavigate();
   const { token } = useAuth();
 
-  // FILTERS STATE
   const [filters, setFilters] = useState({
     type: "all",
     category: "all",
     search: "",
   });
 
-  // Fetch Data (Memoized)
   const fetchItems = useCallback((currentFilters) => {
     setLoading(true);
-    
-    // Build Query String
-    const queryParams = new URLSearchParams();
-    if (currentFilters.type !== "all") queryParams.append("type", currentFilters.type);
-    if (currentFilters.category !== "all") queryParams.append("category", currentFilters.category);
-    if (currentFilters.search) queryParams.append("search", currentFilters.search);
 
-    fetch(`http://localhost:5000/api/lostfound?${queryParams.toString()}`)
+    const queryParams = new URLSearchParams();
+    if (currentFilters.type !== "all")
+      queryParams.append("type", currentFilters.type);
+    if (currentFilters.category !== "all")
+      queryParams.append("category", currentFilters.category);
+    if (currentFilters.search)
+      queryParams.append("search", currentFilters.search);
+
+    fetch(`${API_BASE_URL}/api/lostfound?${queryParams.toString()}`)
       .then((res) => res.json())
       .then((data) => {
         setItems(data);
@@ -40,7 +41,6 @@ export const LostFoundPage = () => {
       });
   }, []);
 
-  // Debounced Fetch Effect
   useEffect(() => {
     const timer = setTimeout(() => {
       fetchItems(filters);
@@ -53,54 +53,66 @@ export const LostFoundPage = () => {
     setFilters((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  // Claim Handler (Memoized)
-  const handleClaim = useCallback(async (id) => {
-    if (!token) {
+  const handleClaim = useCallback(
+    async (id) => {
+      if (!token) {
         alert("Please login to claim items.");
         navigate("/login");
         return;
-    }
-    
-    if (!window.confirm("Are you sure you want to claim this item? This will mark it as found/returned.")) return;
+      }
 
-    try {
-        const res = await fetch(`http://localhost:5000/api/lostfound/${id}/claim`, {
+      if (
+        !window.confirm(
+          "Are you sure you want to claim this item? This will mark it as found/returned."
+        )
+      )
+        return;
+
+      try {
+        const res = await fetch(
+          `${API_BASE_URL}/api/lostfound/${id}/claim`,
+          {
             method: "PUT",
-            headers: { Authorization: `Bearer ${token}` }
-        });
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
 
         if (res.ok) {
-            alert("Item successfully claimed!");
-            // Trigger refetch with current filters
-            fetchItems(filters);
+          alert("Item successfully claimed!");
+          fetchItems(filters);
         } else {
-            alert("Failed to claim item.");
+          alert("Failed to claim item.");
         }
-    } catch (error) {
+      } catch (error) {
         console.error(error);
-    }
-  }, [token, navigate, filters, fetchItems]);
+      }
+    },
+    [token, navigate, filters, fetchItems]
+  );
 
   return (
-    <div
-      className="min-h-screen bg-gradient-to-br from-[#f5f7ff] via-white to-[#e9f5ff] p-8"
-    >
+    <div className="min-h-screen bg-gradient-to-br from-[#f5f7ff] via-white to-[#e9f5ff] p-8">
       <div className="max-w-7xl mx-auto">
-        
         {/* HEADER */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-10">
           <div>
-            <h2 className="text-4xl font-extrabold text-[#130745]">Lost & Found</h2>
-            <p className="text-gray-500 mt-2">Report lost items or find what you've been looking for.</p>
+            <h2 className="text-4xl font-extrabold text-[#130745]">
+              Lost &amp; Found
+            </h2>
+            <p className="text-gray-500 mt-2">
+              Report lost items or find what you've been looking for.
+            </p>
           </div>
           <div className="mt-4 md:mt-0">
-            <Button name={"➕ Report Item"} onClick={() => navigate("/lostFound/create")} />
+            <Button
+              name={"➕ Report Item"}
+              onClick={() => navigate("/lostFound/create")}
+            />
           </div>
         </div>
 
         {/* FILTERS & SEARCH BAR */}
         <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 mb-8 flex flex-col md:flex-row gap-4 items-center">
-          
           {/* Search */}
           <div className="relative flex-grow w-full md:w-auto">
             <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
@@ -145,24 +157,29 @@ export const LostFoundPage = () => {
               <option value="other">Other</option>
             </select>
           </div>
-
         </div>
 
         {/* GRID */}
         {loading ? (
-            <p className="text-center text-gray-500">Loading items...</p>
+          <p className="text-center text-gray-500">Loading items...</p>
         ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {items.length > 0 ? (
-                items.map((item) => (
-                <LostItemCard key={item._id} item={item} onClaim={handleClaim} />
-                ))
+              items.map((item) => (
+                <LostItemCard
+                  key={item._id}
+                  item={item}
+                  onClaim={handleClaim}
+                />
+              ))
             ) : (
-                <div className="col-span-full text-center py-20">
-                    <p className="text-xl text-gray-400 font-medium">No items match your filters.</p>
-                </div>
+              <div className="col-span-full text-center py-20">
+                <p className="text-xl text-gray-400 font-medium">
+                  No items match your filters.
+                </p>
+              </div>
             )}
-            </div>
+          </div>
         )}
       </div>
     </div>
