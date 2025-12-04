@@ -1,0 +1,79 @@
+/* Banner */
+.admin-banner {
+  position: relative;
+  width: 100%;
+  height: 240px;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 30px;
+}
+
+.admin-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.85;
+}
+
+.admin-banner h1 {
+  position: absolute;
+  bottom: 20px;
+  left: 30px;
+  font-size: 42px;
+  font-weight: 800;
+  color: white;
+}
+
+/* Welcome */
+.admin-welcome {
+  margin-bottom: 35px;
+}
+
+.admin-welcome h2 {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.admin-welcome p {
+  color: #555;
+  font-size: 16px;
+}
+
+/* Stats */
+.admin-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 25px;
+}
+
+.admin-stat-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  text-align: center;
+  transition: 0.2s ease;
+}
+
+.admin-stat-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.admin-stat-card img {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 10px;
+}
+
+.admin-stat-card h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1e3a8a;
+}
+
+.admin-stat-card p {
+  font-size: 28px;
+  font-weight: 700;
+  margin-top: 5px;
+}

@@ -1,0 +1,174 @@
+/* ================================================
+   STUDENT DASHBOARD — GLOBAL WRAPPER
+   ================================================ */
+.student-dashboard {
+  padding: 20px;
+  background: #f4f7ff;
+  min-height: 100vh;
+  color: #1a1a3c;
+  font-family: "Poppins", sans-serif;
+}
+
+/* ================================================
+   BANNER
+   ================================================ */
+.student-banner {
+  background: linear-gradient(135deg, #110753, #5145ea);
+  padding: 40px 30px;
+  border-radius: 18px;
+  color: white;
+  text-align: left;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+}
+
+.student-banner h1 {
+  font-size: 34px;
+  font-weight: 700;
+}
+
+.student-banner p {
+  margin-top: 8px;
+  font-size: 18px;
+  opacity: 0.9;
+}
+
+/* ================================================
+   QUICK ACCESS CARDS (Stats)
+   ================================================ */
+.student-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 22px;
+  margin-bottom: 40px;
+}
+
+.student-card {
+  background: white;
+  padding: 25px;
+  border-radius: 16px;
+  border: 1px solid #e0e0ff;
+  box-shadow: 0 4px 12px rgba(17, 7, 83, 0.08);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-align: center;
+}
+
+.student-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 18px rgba(17, 7, 83, 0.18);
+}
+
+.student-card img {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+  margin-bottom: 12px;
+}
+
+.student-card h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.student-card p {
+  font-size: 15px;
+  color: #4a4a6a;
+}
+
+/* ================================================
+   RECENT ACTIVITY SECTION
+   ================================================ */
+.recent-activity-section {
+  margin-top: 40px;
+}
+
+.recent-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 18px;
+  color: #1a1a3c;
+}
+
+/* Grid for recent activity (3 columns) */
+.recent-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: 20px;
+}
+
+/* Each box */
+.recent-box {
+  background: white;
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid #e0e0ff;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.07);
+}
+
+.recent-box-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #110753;
+}
+
+/* Each recent item */
+.recent-item {
+  padding: 12px;
+  margin-bottom: 12px;
+  background: #f7f8ff;
+  border: 1px solid #e4e6ff;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(17, 7, 83, 0.05);
+  transition: all 0.25s ease;
+}
+
+.recent-item:hover {
+  background: #eef0ff;
+  transform: translateX(4px);
+}
+
+.recent-item h4 {
+  font-size: 17px;
+  font-weight: 600;
+  color: #1a1a3c;
+  margin-bottom: 6px;
+}
+
+.recent-item p {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 6px;
+}
+
+.recent-date {
+  font-size: 13px;
+  color: #777;
+  display: block;
+}
+
+/* No data */
+.no-data {
+  font-size: 15px;
+  color: #999;
+  padding-top: 10px;
+  text-align: left;
+}
+
+/* ================================================
+   RESPONSIVE IMPROVEMENTS
+   ================================================ */
+@media (max-width: 768px) {
+  .student-banner h1 {
+    font-size: 26px;
+  }
+  .student-card img {
+    width: 55px;
+    height: 55px;
+  }
+  .recent-item {
+    padding: 10px;
+  }
+}

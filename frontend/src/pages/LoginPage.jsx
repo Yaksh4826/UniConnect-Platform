@@ -3,33 +3,69 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 export const LoginPage = () => {
-    const { login, user } = useAuth(); // ✅ top-level hook
+  const { login } = useAuth();
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({ email: "", password: "" });
 
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  // -------------------------------
+  // HANDLE INPUT CHANGE
+  // -------------------------------
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // -------------------------------
+  // HANDLE LOGIN SUBMIT
+  // -------------------------------
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // 🚀 Attempt login using AuthContext
     const success = await login(formData.email, formData.password);
-    if (success) {
-      navigate(`/profile/${user._id}`); // now user is available
+
+    if (!success) return;
+
+    // ✔ Get the fresh user stored by AuthContext
+    const loggedInUser = JSON.parse(localStorage.getItem("user"));
+
+    if (!loggedInUser) {
+      alert("Login failed: No user data returned.");
+      return;
     }
+
+    // -------------------------------
+    // 🚀 ROLE-BASED REDIRECTION
+    // -------------------------------
+    if (loggedInUser.role === "admin") {
+      navigate("/admin/dashboard");               // ADMIN → Admin Dashboard
+      return;
+    }
+
+    if (loggedInUser.role === "student") {
+      navigate("/student/dashboard");             // STUDENT → Student Dashboard
+      return;
+    }
+
+    // DEFAULT → Profile page
+    navigate(`/profile/${loggedInUser._id}`);
   };
 
-
+  // -------------------------------
+  // RENDER UI
+  // -------------------------------
   return (
     <div className="w-full min-h-screen flex justify-center items-center bg-gray-100">
-
       <div className="w-full max-w-2xl bg-white p-10 rounded-2xl shadow-xl border border-gray-200">
         <h2 className="text-3xl font-extrabold text-center text-[#130745] mb-6">
           Login
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-6 text-lg">
-
+          
           {/* Email */}
           <div>
             <label className="block font-semibold mb-1">Email</label>

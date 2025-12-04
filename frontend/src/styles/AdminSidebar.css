@@ -1,0 +1,84 @@
+/* ===============================
+      ADMIN SIDEBAR (IMPROVED)
+   =============================== */
+
+.admin-sidebar {
+  width: 240px;
+  height: 100vh;
+  background: #1e3a8a;
+  color: white;
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding: 30px 20px;
+  border-right: 3px solid #0f1a45;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* Title */
+.sidebar-title {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 5px;
+  text-align: left;
+}
+
+/* Navigation links */
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.sidebar-link {
+  color: #cfd8ff;
+  text-decoration: none;
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 17px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: 0.25s ease;
+}
+
+/* Hover */
+.sidebar-link:hover {
+  background: #2c4fb6;
+  color: #fff;
+  transform: translateX(4px);
+}
+
+/* Active Link */
+.sidebar-link.active {
+  background: #4f46e5;
+  color: #fff;
+  font-weight: 600;
+  border-left: 4px solid #ffffff;
+  padding-left: 18px;
+}
+
+/* Icons */
+.icon {
+  font-size: 20px;
+}
+
+/* Responsive (Mobile Admin View) */
+@media (max-width: 768px) {
+  .admin-sidebar {
+    width: 200px;
+    padding: 20px 15px;
+  }
+
+  .sidebar-title {
+    font-size: 22px;
+  }
+
+  .sidebar-link {
+    font-size: 15px;
+    padding: 10px 12px;
+  }
+}

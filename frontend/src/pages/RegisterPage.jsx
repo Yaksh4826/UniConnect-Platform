@@ -6,46 +6,44 @@ export const RegisterPage = () => {
   const { register } = useAuth();
   const navigate = useNavigate();
 
-  
-const [formData, setFormData] = useState({
-  fullName: "",
-  email: "",
-  password: "",
-  role: "student", // default value
-});
-
-// In your handleChange function nothing changes, works for select too
-
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+    role: "student",   // default
+  });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  // Send role safely to backend
-  const success = await register(
-    formData.fullName,
-    formData.email,
-    formData.password,
-    formData.role // this is supported now
-  );
+    const success = await register(
+      formData.fullName,
+      formData.email,
+      formData.password,
+      formData.role
+    );
 
-  if (success) navigate("/ProfilePage");
-};
+    if (!success) return;
 
+    // 🔥 After register, user must login again (your backend requires login)
+    alert("Registration successful! Please login.");
+
+    navigate("/login");
+  };
 
   return (
     <div className="w-full min-h-screen flex justify-center items-center bg-gray-100">
-
       <div className="w-full max-w-2xl bg-white p-10 rounded-2xl shadow-xl border border-gray-200">
         <h2 className="text-3xl font-extrabold text-center text-[#130745] mb-6">
           Create Account
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-6 text-lg">
-
+          
           {/* Full Name */}
           <div>
             <label className="block font-semibold mb-1">Full Name</label>
@@ -85,24 +83,20 @@ const handleSubmit = async (e) => {
             />
           </div>
 
-
-{/* Role */}
-<div>
-  <label className="block font-semibold mb-1">Role</label>
-  <select
-    name="role"
-    value={formData.role}
-    onChange={handleChange}
-    className="w-full border px-4 py-3 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#130745]"
-  >
-    <option value="student">Student</option>
-    <option value="admin">Admin</option>
-    <option value="staff">Staff</option>
-  </select>
-</div>
-
-
-
+          {/* Role */}
+          <div>
+            <label className="block font-semibold mb-1">Role</label>
+            <select
+              name="role"
+              value={formData.role}
+              onChange={handleChange}
+              className="w-full border px-4 py-3 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#130745]"
+            >
+              <option value="student">Student</option>
+              <option value="admin">Admin</option>
+              <option value="staff">Staff</option>
+            </select>
+          </div>
 
           {/* Submit Button */}
           <button

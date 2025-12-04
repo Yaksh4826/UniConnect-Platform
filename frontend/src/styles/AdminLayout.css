@@ -1,0 +1,16 @@
+/* ADMIN LAYOUT — STRUCTURE */
+
+.admin-layout {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+/* Right side */
+.admin-content {
+  margin-left: 240px; /* sidebar width */
+  padding: 30px;
+  width: calc(100% - 240px);
+  min-height: 100vh;
+  background: #f3f4f6;
+}

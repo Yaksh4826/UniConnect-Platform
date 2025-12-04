@@ -4,7 +4,9 @@ import {
   registerUser,
   loginUser,
   getUsers,
-  getUserById
+  getUserById,
+  updateUser,
+  deleteUser
 } from "../controllers/userController.js";
 
 const router = express.Router();
@@ -26,5 +28,23 @@ router.post("/login", loginUser);
  * @desc    Get all users
  */
 router.get("/", getUsers);
-router.get("/:id", getUserById)
+
+/**
+ * @route   GET /api/users/:id
+ * @desc    Get user by ID
+ */
+router.get("/:id", getUserById);
+
+/**
+ * @route   PUT /api/users/:id
+ * @desc    Update user (role, fullName, email)
+ */
+router.put("/:id", updateUser);
+
+/**
+ * @route   DELETE /api/users/:id
+ * @desc    Delete user
+ */
+router.delete("/:id", deleteUser);
+
 export default router;
