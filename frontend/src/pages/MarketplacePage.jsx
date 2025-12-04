@@ -1,10 +1,20 @@
 import React, { useEffect, useState } from "react";
+import { useAuth } from "../context/AuthContext";
 
 export const MarketplacePage = () => {
+  const { user, token } = useAuth(); // ⭐ Needed to attach postedBy
   const [items, setItems] = useState([]);
   const [showForm, setShowForm] = useState(false);
-  const [formData, setFormData] = useState({ title: "", description: "", price: "", image: "" });
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    price: "",
+    image: "",
+  });
 
+  // ============================
+  // FETCH ALL ITEMS
+  // ============================
   useEffect(() => {
     fetch("http://localhost:5000/api/marketplace")
       .then((res) => res.json())
@@ -12,22 +22,44 @@ export const MarketplacePage = () => {
       .catch((err) => console.error(err));
   }, []);
 
-  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
 
+  // ============================
+  // CREATE ITEM
+  // ============================
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!user) return alert("Please login to create items.");
+
+    const body = {
+      ...formData,
+      postedBy: user.id, // ⭐ VERY IMPORTANT
+    };
+
     try {
       const res = await fetch("http://localhost:5000/api/marketplace", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        headers: { 
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(body),
       });
-      if (res.ok) {
-        alert("Item created!");
-        setItems([...items, formData]);
-        setFormData({ title: "", description: "", price: "", image: "" });
-        setShowForm(false);
-      } else alert("Error creating item");
+
+      if (!res.ok) {
+        alert("Error creating item");
+        return;
+      }
+
+      const newItem = await res.json();
+      setItems([...items, newItem]); // ⭐ Add instantly
+
+      alert("Item created!");
+
+      setFormData({ title: "", description: "", price: "", image: "" });
+      setShowForm(false);
     } catch (err) {
       console.error(err);
       alert("Server error");
@@ -36,18 +68,20 @@ export const MarketplacePage = () => {
 
   return (
     <div className="p-12">
-      {/* Header + Create Button */}
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-4xl font-extrabold text-[#130745]">Marketplace</h2>
-        <button
-          onClick={() => setShowForm(true)}
-          className="px-6 py-3 bg-gradient-to-r from-[#130745] to-[#1a0a5e] text-white rounded-lg font-semibold hover:scale-[1.03] transition-shadow"
-        >
-          Add Item
-        </button>
+
+        {user && (
+          <button
+            onClick={() => setShowForm(true)}
+            className="px-6 py-3 bg-gradient-to-r from-[#130745] to-[#1a0a5e] text-white rounded-lg font-semibold hover:scale-[1.03] transition-shadow"
+          >
+            Add Item
+          </button>
+        )}
       </div>
 
-      {/* Cards */}
+      {/* ITEMS LIST */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {items.map((item, idx) => (
           <div key={idx} className="p-4 border rounded-xl shadow hover:shadow-lg transition">
@@ -58,7 +92,7 @@ export const MarketplacePage = () => {
         ))}
       </div>
 
-      {/* Form Modal */}
+      {/* FORM MODAL */}
       {showForm && (
         <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
           <div className="bg-white p-8 rounded-2xl max-w-lg w-full relative">
@@ -68,48 +102,52 @@ export const MarketplacePage = () => {
             >
               &times;
             </button>
+
             <h2 className="text-3xl font-extrabold text-[#130745] mb-6 text-center">
               Add Marketplace Item
             </h2>
+
             <form onSubmit={handleSubmit} className="space-y-4">
               <input
-                type="text"
                 name="title"
                 value={formData.title}
                 onChange={handleChange}
                 placeholder="Title"
-                className="w-full border px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#130745]"
+                className="w-full border px-4 py-3 rounded-lg"
                 required
               />
+
               <textarea
                 name="description"
                 value={formData.description}
                 onChange={handleChange}
-                placeholder="Description"
                 rows={4}
-                className="w-full border px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#130745]"
+                placeholder="Description"
+                className="w-full border px-4 py-3 rounded-lg"
                 required
               />
+
               <input
                 type="number"
                 name="price"
                 value={formData.price}
                 onChange={handleChange}
                 placeholder="Price"
-                className="w-full border px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#130745]"
+                className="w-full border px-4 py-3 rounded-lg"
                 required
               />
+
               <input
-                type="text"
                 name="image"
                 value={formData.image}
                 onChange={handleChange}
                 placeholder="Image URL"
-                className="w-full border px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#130745]"
+                className="w-full border px-4 py-3 rounded-lg"
               />
+
               <button
                 type="submit"
-                className="w-full py-3 rounded-xl text-white font-semibold text-lg bg-gradient-to-r from-[#130745] to-[#1a0a5e] hover:opacity-90 shadow-md"
+                className="w-full py-3 rounded-xl text-white font-semibold text-lg bg-gradient-to-r from-[#130745] to-[#1a0a5e]"
               >
                 Submit
               </button>

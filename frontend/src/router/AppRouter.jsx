@@ -19,11 +19,20 @@ import AdminEvents from "../pages/admin/AdminEvents.jsx";
 import AdminMarketplace from "../pages/admin/AdminMarketplace.jsx";
 import AdminLostFound from "../pages/admin/AdminLostFound.jsx";
 
-// ⭐ STUDENT DASHBOARD ⭐ (NEW)
+// ⭐ STUDENT PAGES ⭐
 import StudentDashboard from "../pages/student/StudentDashboard.jsx";
-
-// ⭐ STUDENT SUB-PAGES ⭐ (NEW)
 import MyMarketplacePosts from "../pages/student/MyMarketplacePosts.jsx";
+
+// ⭐ STAFF PAGES ⭐
+import StaffDashboard from "../pages/staff/StaffDashboard.jsx";
+import StaffLostFound from "../pages/staff/StaffLostFound.jsx";
+import StaffEvents from "../pages/staff/StaffEvents.jsx";
+import StaffMarketplace from "../pages/staff/StaffMarketplace.jsx";
+
+// ⭐ STAFF EDIT PAGES ⭐
+import StaffLostFoundEdit from "../pages/staff/StaffLostFoundEdit.jsx";
+import StaffEventsEdit from "../pages/staff/StaffEventsEdit.jsx";
+import StaffMarketplaceEdit from "../pages/staff/StaffMarketplaceEdit.jsx"; // ⭐ NEW
 
 export const AppRouter = () => {
   return (
@@ -31,7 +40,9 @@ export const AppRouter = () => {
       <Navbar />
 
       <Routes>
-        {/* PUBLIC ROUTES */}
+        {/* ============================================================
+            ⭐ PUBLIC ROUTES
+        ============================================================ */}
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
@@ -42,12 +53,12 @@ export const AppRouter = () => {
         <Route path="/profile/:id" element={<ProfilePage />} />
 
         {/* ============================================================
-            ⭐ STUDENT DASHBOARD ROUTES (LOGGED IN USERS ONLY)
-           ============================================================ */}
+            ⭐ STUDENT ROUTES
+        ============================================================ */}
         <Route
           path="/student/dashboard"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute role="student">
               <StudentDashboard />
             </ProtectedRoute>
           }
@@ -56,16 +67,84 @@ export const AppRouter = () => {
         <Route
           path="/student/myposts"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute role="student">
               <MyMarketplacePosts />
             </ProtectedRoute>
           }
         />
 
         {/* ============================================================
-            ⭐ ADMIN ROUTES — Protected by ROLE ⭐
-           ============================================================ */}
+            ⭐ STAFF ROUTES
+        ============================================================ */}
+        <Route
+          path="/staff/dashboard"
+          element={
+            <ProtectedRoute role="staff">
+              <StaffDashboard />
+            </ProtectedRoute>
+          }
+        />
 
+        <Route
+          path="/staff/lostfound"
+          element={
+            <ProtectedRoute role="staff">
+              <StaffLostFound />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ⭐ Staff Edit LostFound */}
+        <Route
+          path="/staff/lostfound/edit/:id"
+          element={
+            <ProtectedRoute role="staff">
+              <StaffLostFoundEdit />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/staff/events"
+          element={
+            <ProtectedRoute role="staff">
+              <StaffEvents />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ⭐ Staff Edit Events */}
+        <Route
+          path="/staff/events/edit/:id"
+          element={
+            <ProtectedRoute role="staff">
+              <StaffEventsEdit />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/staff/marketplace"
+          element={
+            <ProtectedRoute role="staff">
+              <StaffMarketplace />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ⭐ Staff Edit Marketplace */}
+        <Route
+          path="/staff/marketplace/edit/:id"
+          element={
+            <ProtectedRoute role="staff">
+              <StaffMarketplaceEdit />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ============================================================
+            ⭐ ADMIN ROUTES
+        ============================================================ */}
         <Route
           path="/admin/dashboard"
           element={

@@ -1,0 +1,205 @@
+/* ============================================================
+   STAFF LOST & FOUND — MAIN CONTAINER
+   ============================================================ */
+.staff-lf-container {
+  width: 100%;
+  padding: 40px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* Page Title */
+.staff-lf-title {
+  font-size: 34px;
+  font-weight: 800;
+  color: #130745;
+  margin-bottom: 25px;
+  text-align: left;
+}
+
+/* ============================================================
+   TABLE WRAPPER
+   ============================================================ */
+.staff-lf-table-wrapper {
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 14px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+  border: 1px solid #e5e7eb;
+  margin-bottom: 30px;
+}
+
+/* ============================================================
+   TABLE BASE STYLING
+   ============================================================ */
+.staff-lf-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 16px;
+}
+
+.staff-lf-table th,
+.staff-lf-table td {
+  text-align: left;
+  padding: 14px 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.staff-lf-table th {
+  background: #f1f4ff;
+  font-weight: 700;
+  color: #130745;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.staff-lf-table tbody tr:hover {
+  background: #fafaff;
+}
+
+/* ============================================================
+   STATUS COLORS
+   ============================================================ */
+.lost-text {
+  color: #d32f2f;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.found-text {
+  color: #2e7d32;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.empty-msg {
+  text-align: center;
+  padding: 20px;
+  font-style: italic;
+  color: #777;
+}
+
+/* ============================================================
+   ACTION BUTTONS
+   ============================================================ */
+.staff-actions-cell {
+  display: flex;
+  gap: 12px;
+}
+
+.staff-edit-btn {
+  background: #3949ab;
+  color: #fff;
+  padding: 7px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+.staff-edit-btn:hover {
+  background: #283593;
+  transform: scale(1.08);
+}
+
+.staff-delete-btn {
+  background: #d32f2f;
+  color: #fff;
+  padding: 7px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+.staff-delete-btn:hover {
+  background: #b71c1c;
+  transform: scale(1.08);
+}
+
+/* ============================================================
+   EDIT FORM — BEAUTIFUL UI FIX
+   ============================================================ */
+
+.staff-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.staff-edit-label {
+  font-weight: 600;
+  color: #130745;
+  margin-bottom: 4px;
+}
+
+.staff-edit-input,
+.staff-edit-textarea,
+.staff-edit-select {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 15px;
+  background: #fafafa;
+  transition: all 0.25s ease;
+}
+
+.staff-edit-input:focus,
+.staff-edit-textarea:focus,
+.staff-edit-select:focus {
+  outline: none;
+  border-color: #3949ab;
+  box-shadow: 0 0 4px rgba(57, 73, 171, 0.3);
+}
+
+.staff-edit-textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.staff-edit-save-btn {
+  background: #3949ab;
+  color: #fff;
+  padding: 12px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.staff-edit-save-btn:hover {
+  background: #283593;
+  transform: scale(1.03);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+  .staff-lf-container {
+    padding: 20px;
+  }
+
+  .staff-actions-cell {
+    flex-direction: column;
+  }
+
+  .staff-edit-btn,
+  .staff-delete-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .staff-edit-save-btn {
+    width: 100%;
+  }
+}

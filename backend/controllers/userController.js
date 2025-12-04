@@ -9,14 +9,11 @@ export const registerUser = async (req, res) => {
   try {
     const { fullName, email, password, role } = req.body;
 
-    // Check if email exists
     const exists = await User.findOne({ email });
     if (exists) return res.status(400).json({ message: "Email already used" });
 
-    // Hash password
     const hashed = await bcrypt.hash(password, 10);
 
-    // Create user with role (lowercase to match schema)
     const user = await User.create({
       fullName,
       email,
@@ -27,7 +24,7 @@ export const registerUser = async (req, res) => {
     res.status(201).json({
       message: "Registered successfully",
       user: {
-        id: user._id,
+        _id: user._id,            // ⭐ FIXED
         fullName: user.fullName,
         email: user.email,
         role: user.role,
@@ -45,15 +42,12 @@ export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Find user
     const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    // Compare passwords
     const match = await bcrypt.compare(password, user.password);
     if (!match) return res.status(401).json({ message: "Invalid password" });
 
-    // Create JWT with role
     const token = jwt.sign(
       {
         id: user._id,
@@ -66,8 +60,10 @@ export const loginUser = async (req, res) => {
     res.json({
       message: "Login successful",
       token,
+
+      // ⭐ FIXED — Return _id instead of id
       user: {
-        id: user._id,
+        _id: user._id,             // ⭐ FIXED
         fullName: user.fullName,
         email: user.email,
         role: user.role,
@@ -105,7 +101,7 @@ export const getUserById = async (req, res) => {
 };
 
 // =============================================================
-// UPDATE USER (⭐ ADDED — Required for Admin Edit)
+// UPDATE USER
 // =============================================================
 export const updateUser = async (req, res) => {
   try {
@@ -126,7 +122,7 @@ export const updateUser = async (req, res) => {
 };
 
 // =============================================================
-// DELETE USER (⭐ ADDED — Required for Admin Delete)
+// DELETE USER
 // =============================================================
 export const deleteUser = async (req, res) => {
   try {

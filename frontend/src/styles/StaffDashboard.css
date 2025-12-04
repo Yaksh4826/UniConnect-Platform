@@ -1,0 +1,146 @@
+/* ===========================
+   STAFF DASHBOARD PAGE
+   =========================== */
+.staff-dashboard-container {
+  padding: 40px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.staff-dashboard-title {
+  font-size: 2.6rem;
+  font-weight: 800;
+  color: #130745;
+  margin-bottom: 10px;
+}
+
+.staff-dashboard-subtitle {
+  color: #6b7280;
+  margin-bottom: 30px;
+}
+
+/* ===========================
+   STATS CARDS
+   =========================== */
+.staff-stats-row {
+  display: flex;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+
+.staff-stat-card {
+  flex: 1;
+  min-width: 230px;
+  background: white;
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  transition: 0.2s;
+}
+
+.staff-stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+.staff-stat-number {
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: #130745;
+}
+
+.staff-stat-label {
+  font-size: 1.1rem;
+  color: #6b7280;
+}
+
+/* ===========================
+   QUICK LINKS (CARDS)
+   =========================== */
+.staff-quick-links {
+  margin-top: 40px;
+}
+
+.staff-links-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 25px;
+}
+
+.staff-link-card {
+  background: linear-gradient(135deg, #1a0a5e, #3a2fb3);
+  color: white;
+  padding: 25px;
+  border-radius: 18px;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.15);
+  transition: 0.25s ease;
+  cursor: pointer;
+  text-align: center;
+}
+
+.staff-link-card:hover {
+  transform: scale(1.04);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.22);
+}
+
+.staff-link-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.staff-link-desc {
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+/* ===========================
+   RECENT ACTIVITY TABLE
+   =========================== */
+.staff-section-title {
+  margin-top: 45px;
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: #130745;
+}
+
+.staff-table-container {
+  margin-top: 15px;
+  background: white;
+  padding: 18px;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+.staff-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.staff-table th {
+  background: #f8f9ff;
+  padding: 12px;
+  border-bottom: 2px solid #e5e7eb;
+  text-align: left;
+  font-weight: 700;
+}
+
+.staff-table td {
+  padding: 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.activity-status-resolved {
+  color: #16a34a;
+  font-weight: bold;
+}
+
+.activity-status-lost {
+  color: #dc2626;
+  font-weight: bold;
+}
+
+.activity-status-found {
+  color: #2563eb;
+  font-weight: bold;
+}

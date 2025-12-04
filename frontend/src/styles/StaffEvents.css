@@ -1,0 +1,101 @@
+/* ============================================================
+   STAFF EVENTS PAGE — CONTAINER
+   ============================================================ */
+.staff-events-container {
+  width: 100%;
+  max-width: 1200px;
+  padding: 40px;
+  margin: auto;
+}
+
+.staff-events-title {
+  font-size: 34px;
+  font-weight: 800;
+  color: #130745;
+  margin-bottom: 25px;
+}
+
+/* ============================================================
+   TABLE WRAPPER
+   ============================================================ */
+.staff-events-table-wrapper {
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow-x: auto;
+}
+
+/* ============================================================
+   TABLE BASE
+   ============================================================ */
+.staff-events-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.staff-events-table th,
+.staff-events-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+.staff-events-table th {
+  background: #f1f4ff;
+  font-weight: 700;
+  color: #130745;
+  text-transform: uppercase;
+}
+
+.staff-events-table tr:hover {
+  background: #fafaff;
+}
+
+/* ============================================================
+   ACTION BUTTONS
+   ============================================================ */
+.staff-action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.staff-edit-btn {
+  background: #3949ab;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.25s;
+}
+
+.staff-edit-btn:hover {
+  background: #2c3b8f;
+  transform: scale(1.08);
+}
+
+.staff-delete-btn {
+  background: #d32f2f;
+  color: white;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.25s;
+}
+
+.staff-delete-btn:hover {
+  background: #b71c1c;
+  transform: scale(1.08);
+}
+
+.empty-msg {
+  padding: 20px;
+  text-align: center;
+  color: #777;
+  font-style: italic;
+}

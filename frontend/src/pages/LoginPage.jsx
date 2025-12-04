@@ -26,27 +26,32 @@ export const LoginPage = () => {
 
     // 🚀 Attempt login using AuthContext
     const success = await login(formData.email, formData.password);
-
     if (!success) return;
 
     // ✔ Get the fresh user stored by AuthContext
     const loggedInUser = JSON.parse(localStorage.getItem("user"));
 
-    if (!loggedInUser) {
+    // ⭐ EXTRA SAFETY CHECK
+    if (!loggedInUser || !loggedInUser._id) {
       alert("Login failed: No user data returned.");
       return;
     }
 
     // -------------------------------
-    // 🚀 ROLE-BASED REDIRECTION
+    // 🚀 ROLE-BASED REDIRECTION (FIXED)
     // -------------------------------
     if (loggedInUser.role === "admin") {
-      navigate("/admin/dashboard");               // ADMIN → Admin Dashboard
+      navigate("/admin/dashboard");
       return;
     }
 
     if (loggedInUser.role === "student") {
-      navigate("/student/dashboard");             // STUDENT → Student Dashboard
+      navigate("/student/dashboard");
+      return;
+    }
+
+    if (loggedInUser.role === "staff") {
+      navigate("/staff/dashboard");
       return;
     }
 

@@ -1,22 +1,25 @@
 // frontend/src/context/AuthContext.jsx
 import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
 
-// ✅ Central place for API base (easy to change later)
+// Central place for API base
 const API_BASE = "http://localhost:5000/api";
 
 export const AuthProvider = ({ children }) => {
-  // Try to restore from localStorage on first load
+  const navigate = useNavigate();
+
+  // Restore login from localStorage
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("user")) || null
   );
   const [token, setToken] = useState(localStorage.getItem("token") || "");
 
   // ============================================================
-  // Persist user + token on reload
+  // Persist USER changes
   // ============================================================
   useEffect(() => {
     if (user) {
@@ -26,6 +29,7 @@ export const AuthProvider = ({ children }) => {
     }
   }, [user]);
 
+  // Persist TOKEN changes
   useEffect(() => {
     if (token) {
       localStorage.setItem("token", token);
@@ -34,10 +38,8 @@ export const AuthProvider = ({ children }) => {
     }
   }, [token]);
 
-  // Small helper if you ever need auth headers
-  const authHeaders = token
-    ? { Authorization: `Bearer ${token}` }
-    : {};
+  // Auth header helper
+  const authHeaders = token ? { Authorization: `Bearer ${token}` } : {};
 
   // ============================================================
   // REGISTER
@@ -51,16 +53,10 @@ export const AuthProvider = ({ children }) => {
         role,
       });
 
-      console.log("REGISTER RESPONSE:", res.data);
-      alert("Registered: Please login now.");
+      alert("Registration successful! Please login now.");
       return true;
     } catch (err) {
-      console.error("Register Error:", err.response || err);
-      alert(
-        err.response?.data?.message ||
-          err.message ||
-          "Registration failed!"
-      );
+      alert(err.response?.data?.message || "Registration failed!");
       return false;
     }
   };
@@ -77,29 +73,34 @@ export const AuthProvider = ({ children }) => {
 
       const { user: loggedInUser, token: jwtToken } = res.data;
 
-      // ⭐ VERY IMPORTANT: user includes _id, fullName, email, role
       setUser(loggedInUser);
       setToken(jwtToken);
 
+      // Save to localStorage
       localStorage.setItem("user", JSON.stringify(loggedInUser));
       localStorage.setItem("token", jwtToken);
 
       return true;
     } catch (err) {
-      console.error("Login Error:", err.response || err);
       alert(err.response?.data?.message || "Login failed!");
       return false;
     }
   };
 
   // ============================================================
-  // LOGOUT
+  // LOGOUT  (FIXED ✔ FULL RESET + REDIRECT)
   // ============================================================
   const logout = () => {
-    setUser(null);
-    setToken("");
+    // Remove from localStorage
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+
+    // Clear React states
+    setUser(null);
+    setToken("");
+
+    // Redirect
+    navigate("/login");
   };
 
   // ============================================================
@@ -110,7 +111,7 @@ export const AuthProvider = ({ children }) => {
   const isStaff = () => user?.role === "staff";
   const isStudent = () => user?.role === "student";
 
-  // Convenient userId helper (always uses Mongo _id)
+  // Always give correct Mongo user id
   const userId = user?._id || null;
 
   return (
