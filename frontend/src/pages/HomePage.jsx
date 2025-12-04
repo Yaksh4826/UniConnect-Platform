@@ -39,7 +39,8 @@ export const HomePage = () => {
       .then((res) => res.json())
       .then((data) => {
         console.log("Fetched events:", data);
-        setEvents(data);
+        // Only take first 3 events
+        setEvents(data.slice(0, 3));
       })
       .catch((err) => console.error("Error fetching events:", err));
   }, []);
@@ -66,10 +67,10 @@ export const HomePage = () => {
         </p>
 
         <div className="flex gap-4 mt-4">
-          <Button name="Discover" onClick={() => navigate("/discover")} />
+          <Button name="Marketplace" onClick={() => navigate("/marketplace")} />
           <NormalButton
-            name="Collaborate"
-            onClick={() => navigate("/marketplace")}
+            name="Events"
+            onClick={() => navigate("/events")}
           />
         </div>
       </div>
@@ -113,12 +114,6 @@ export const HomePage = () => {
               key={id}
               className="bg-neutral-primary-soft flex flex-col max-w-sm p-6 border border-gray-300 rounded-lg shadow-lg gap-4"
             >
-              <img
-                className="rounded-base"
-                src="https://www.focuseventphotography.com/wp-content/uploads/2019/12/corporate-events-photographer-mirage-las-vegas.jpg"
-                alt="Event"
-              />
-
               <h5 className="text-2xl font-semibold">{event.title}</h5>
               <p>{event.description}</p>
             </div>

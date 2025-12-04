@@ -34,7 +34,8 @@ export const Navbar = () => {
           <NavLink to="/" className="nav-link">Home</NavLink>
           <NavLink to="/lostFound" className="nav-link">Lost & Found</NavLink>
           <NavLink to="/events" className="nav-link">Events</NavLink>
-          <NavLink to="/marketplace" className="nav-link">Collaborate</NavLink>
+          <NavLink to="/marketplace" className="nav-link">Marketplace</NavLink>
+          {user && <NavLink to="/messages" className="nav-link">Messages</NavLink>}
 
           {/* STUDENT DASHBOARD */}
           {isStudent() && (
@@ -132,7 +133,8 @@ export const Navbar = () => {
             <NavLink to="/" className="mobile-link" onClick={() => setMobileMenuOpen(false)}>Home</NavLink>
             <NavLink to="/lostFound" className="mobile-link" onClick={() => setMobileMenuOpen(false)}>Lost & Found</NavLink>
             <NavLink to="/events" className="mobile-link" onClick={() => setMobileMenuOpen(false)}>Events</NavLink>
-            <NavLink to="/marketplace" className="mobile-link" onClick={() => setMobileMenuOpen(false)}>Collaborate</NavLink>
+            <NavLink to="/marketplace" className="mobile-link" onClick={() => setMobileMenuOpen(false)}>Marketplace</NavLink>
+            {user && <NavLink to="/messages" className="mobile-link" onClick={() => setMobileMenuOpen(false)}>Messages</NavLink>}
 
             {isStudent() && (
               <NavLink

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { FaSave } from "react-icons/fa";
 
 // ✅ Using the same staff styling (correct file)
 import "../../styles/StaffLostFound.css";
@@ -128,7 +129,7 @@ export default function StaffMarketplaceEdit() {
           />
 
           <button type="submit" className="staff-edit-save-btn">
-            Save Changes
+            <FaSave /> Save Changes
           </button>
         </form>
       </div>

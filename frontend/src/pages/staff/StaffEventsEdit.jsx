@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "../../styles/StaffLostFound.css"; // reuse same form styles
 import { useAuth } from "../../context/AuthContext";
+import { FaSave } from "react-icons/fa";
 
 export default function StaffEventsEdit() {
   const { id } = useParams();
@@ -119,7 +120,7 @@ export default function StaffEventsEdit() {
           />
 
           <button className="staff-edit-save-btn" type="submit">
-            Save Changes
+            <FaSave /> Save Changes
           </button>
 
         </form>

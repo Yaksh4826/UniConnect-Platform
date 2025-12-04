@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AdminSidebar from "../../components/admin/AdminSidebar";
+import { FaEdit, FaTrash, FaSave, FaTimes } from "react-icons/fa";
 import "../../styles/AdminLayout.css";
 import "../../styles/AdminMarketplace.css";
 import { useAuth } from "../../context/AuthContext";
@@ -141,14 +142,14 @@ export default function AdminMarketplace() {
                         className="edit-btn"
                         onClick={() => handleEdit(item)}
                       >
-                        ✏️ Edit
+                        <FaEdit /> Edit
                       </button>
 
                       <button
                         className="delete-btn"
                         onClick={() => handleDelete(item._id)}
                       >
-                        🗑 Delete
+                        <FaTrash /> Delete
                       </button>
                     </td>
                   </tr>
@@ -199,11 +200,11 @@ export default function AdminMarketplace() {
 
               <div className="modal-actions">
                 <button className="save-btn" onClick={handleSaveEdit}>
-                  💾 Save
+                  <FaSave /> Save
                 </button>
 
                 <button className="cancel-btn" onClick={() => setEditItem(null)}>
-                  ❌ Cancel
+                  <FaTimes /> Cancel
                 </button>
               </div>
             </div>

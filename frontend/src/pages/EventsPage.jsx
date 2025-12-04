@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 export const EventsPage = () => {
   const navigate = useNavigate();
   const [events, setEvents] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({ title: "", description: "", date: "" });
+  const { user, token } = useAuth();
 
   useEffect(() => {
     fetch("http://localhost:5000/api/events")
@@ -18,10 +20,18 @@ export const EventsPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!user) {
+      alert("Please login to create events.");
+      navigate("/login");
+      return;
+    }
     try {
       const res = await fetch("http://localhost:5000/api/events", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token || ""}`,
+        },
         body: JSON.stringify(formData),
       });
       if (res.ok) {
@@ -38,12 +48,21 @@ export const EventsPage = () => {
   };
 
   return (
-    <div className="p-12">
+    <div
+      className="p-12 min-h-screen bg-gradient-to-br from-[#eef2ff] via-white to-[#e0f4ff]"
+    >
       {/* Header + Create Button */}
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-4xl font-extrabold text-[#130745]">Events</h2>
         <button
-          onClick={() => setShowForm(true)}
+          onClick={() => {
+            if (!user) {
+              alert("Please login to create events.");
+              navigate("/login");
+              return;
+            }
+            setShowForm(true);
+          }}
           className="px-6 py-3 bg-gradient-to-r from-[#130745] to-[#1a0a5e] text-white rounded-lg font-semibold hover:scale-[1.03] transition-shadow"
         >
           Create Event

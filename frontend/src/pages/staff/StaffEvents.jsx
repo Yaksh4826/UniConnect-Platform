@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../../styles/StaffEvents.css";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { FaEdit, FaTrash } from "react-icons/fa";
 
 export default function StaffEvents() {
   const [events, setEvents] = useState([]);
@@ -70,14 +71,14 @@ export default function StaffEvents() {
                       className="staff-edit-btn"
                       onClick={() => navigate(`/staff/events/edit/${ev._id}`)}
                     >
-                      Edit
+                      <FaEdit /> Edit
                     </button>
 
                     <button
                       className="staff-delete-btn"
                       onClick={() => handleDelete(ev._id)}
                     >
-                      Delete
+                      <FaTrash /> Delete
                     </button>
                   </td>
                 </tr>

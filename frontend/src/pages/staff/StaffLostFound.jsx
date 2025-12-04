@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../../styles/StaffLostFound.css";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { FaEdit, FaTrash } from "react-icons/fa";
 
 export default function StaffLostFound() {
   const [items, setItems] = useState([]);
@@ -91,14 +92,14 @@ export default function StaffLostFound() {
                       className="staff-edit-btn"
                       onClick={() => navigate(`/staff/lostfound/edit/${item._id}`)}
                     >
-                      Edit
+                      <FaEdit /> Edit
                     </button>
 
                     <button
                       className="staff-delete-btn"
                       onClick={() => handleDelete(item._id)}
                     >
-                      Delete
+                      <FaTrash /> Delete
                     </button>
                   </td>
                 </tr>

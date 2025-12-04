@@ -30,6 +30,9 @@ export default function StudentDashboard() {
   const [recentEvents, setRecentEvents] = useState([]);
   const [recentLostFound, setRecentLostFound] = useState([]);
   const [recentMarketplace, setRecentMarketplace] = useState([]);
+  
+  // Notifications
+  const [notifications, setNotifications] = useState([]);
 
   // Helper navigation
   const go = (path) => navigate(path);
@@ -69,6 +72,15 @@ export default function StudentDashboard() {
         setRecentEvents(evData.slice(-3).reverse());
         setRecentLostFound(lfData.slice(-3).reverse());
         setRecentMarketplace(mpData.slice(-3).reverse());
+        
+        // FETCH NOTIFICATIONS
+        if (user?._id) {
+          const notifRes = await fetch(`http://localhost:5000/api/notifications/${user._id}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const notifData = await notifRes.json();
+          setNotifications(notifData);
+        }
 
       } catch (err) {
         console.error("Error loading data:", err);
@@ -76,7 +88,13 @@ export default function StudentDashboard() {
     };
 
     loadData();
-  }, [token]);
+  }, [token, user]);
+  
+  // Mark notification as read (optional enhancement)
+  const handleMarkRead = async (id) => {
+    // For now, just filter it out of UI or mark visual style
+    // In real app, call API
+  };
 
   return (
     <div className="student-dashboard">
@@ -115,6 +133,20 @@ export default function StudentDashboard() {
         </div>
 
       </div>
+      
+      {/* ======== NOTIFICATIONS SECTION ======== */}
+      {notifications.length > 0 && (
+        <div className="notifications-section mb-8">
+          <h2 className="recent-title">🔔 Notifications</h2>
+          <div className="notifications-list bg-white p-4 rounded-xl shadow-sm border border-gray-200">
+            {notifications.map((notif) => (
+              <div key={notif._id} className="p-3 mb-2 bg-blue-50 rounded-lg border border-blue-100 text-blue-900 text-sm">
+                {notif.message} <span className="text-xs text-gray-500 block mt-1">{new Date(notif.createdAt).toLocaleString()}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* ======================================== */}
       {/* RECENT ACTIVITY SECTION */}

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AdminSidebar from "../../components/admin/AdminSidebar";
+import { FaEdit, FaTrash, FaPlus, FaSave, FaTimes } from "react-icons/fa";
 import "../../styles/AdminLayout.css";
 import "../../styles/AdminUsers.css";
 import { useAuth } from "../../context/AuthContext";
@@ -157,7 +158,7 @@ export default function AdminUsers() {
           className="create-btn"
           onClick={() => setShowCreateModal(true)}
         >
-          ➕ Create New User
+          <FaPlus /> Create New User
         </button>
 
         <div className="admin-table-container">
@@ -183,11 +184,11 @@ export default function AdminUsers() {
 
                     <td className="action-buttons">
                       <button className="edit-btn" onClick={() => handleEdit(u)}>
-                        ✏️ Edit
+                        <FaEdit /> Edit
                       </button>
 
                       <button className="delete-btn" onClick={() => handleDelete(u._id)}>
-                        🗑 Delete
+                        <FaTrash /> Delete
                       </button>
                     </td>
                   </tr>
@@ -239,8 +240,8 @@ export default function AdminUsers() {
               </div>
 
               <div className="modal-actions">
-                <button className="save-btn" onClick={handleSaveEdit}>💾 Save</button>
-                <button className="cancel-btn" onClick={() => setEditUser(null)}>❌ Cancel</button>
+                <button className="save-btn" onClick={handleSaveEdit}><FaSave /> Save</button>
+                <button className="cancel-btn" onClick={() => setEditUser(null)}><FaTimes /> Cancel</button>
               </div>
             </div>
           </div>
@@ -290,8 +291,8 @@ export default function AdminUsers() {
               </div>
 
               <div className="modal-actions">
-                <button className="save-btn" onClick={handleCreateUser}>💾 Create</button>
-                <button className="cancel-btn" onClick={() => setShowCreateModal(false)}>❌ Close</button>
+                <button className="save-btn" onClick={handleCreateUser}><FaSave /> Create</button>
+                <button className="cancel-btn" onClick={() => setShowCreateModal(false)}><FaTimes /> Close</button>
               </div>
 
             </div>

@@ -48,32 +48,46 @@
 
 .admin-stat-card {
   background: white;
-  padding: 20px;
-  border-radius: 12px;
-  border: 1px solid #d1d5db;
+  padding: 25px 20px;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb; /* lighter border */
   text-align: center;
-  transition: 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 .admin-stat-card:hover {
-  transform: scale(1.03);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
-.admin-stat-card img {
-  width: 60px;
-  height: 60px;
-  margin-bottom: 10px;
+/* Icon wrapper */
+.stat-icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 15px auto;
+  background: #f3f4f6;
+  border-radius: 50%;
+}
+
+.stat-icon {
+  font-size: 32px;
+  color: #1e3a8a; /* Primary color */
 }
 
 .admin-stat-card h3 {
   font-size: 18px;
   font-weight: 600;
-  color: #1e3a8a;
+  color: #4b5563; /* gray-600 */
+  margin-bottom: 5px;
 }
 
 .admin-stat-card p {
-  font-size: 28px;
-  font-weight: 700;
-  margin-top: 5px;
+  font-size: 32px;
+  font-weight: 800;
+  color: #111827; /* gray-900 */
+  margin-top: 0;
 }

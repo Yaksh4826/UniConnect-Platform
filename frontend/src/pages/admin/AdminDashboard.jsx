@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
+import { FaUsers, FaCalendarAlt, FaShoppingCart, FaSearch } from "react-icons/fa";
 
 import AdminSidebar from "../../components/admin/AdminSidebar";
 
@@ -9,10 +10,6 @@ import "../../styles/AdminLayout.css";
 
 // Images
 import adminBanner from "../../assets/admin_banner.jpg";
-import usersIcon from "../../assets/stats_users.png";
-import eventsIcon from "../../assets/stats_events.webp";
-import marketplaceIcon from "../../assets/stats_marketplace.png";
-import lostfoundIcon from "../../assets/stats_lostfound.png";
 
 export default function AdminDashboard() {
   const { user, token } = useAuth();
@@ -30,7 +27,6 @@ export default function AdminDashboard() {
     })
       .then((res) => res.json())
       .then((data) => {
-        // Safety fallback if backend misses fields
         setStats({
           users: data.users || 0,
           events: data.events || 0,
@@ -65,25 +61,25 @@ export default function AdminDashboard() {
         <div className="admin-stats-grid">
 
           <div className="admin-stat-card">
-            <img src={usersIcon} alt="Users" />
+            <div className="stat-icon-wrapper"><FaUsers className="stat-icon" /></div>
             <h3>Total Users</h3>
             <p>{stats.users}</p>
           </div>
 
           <div className="admin-stat-card">
-            <img src={eventsIcon} alt="Events" />
+            <div className="stat-icon-wrapper"><FaCalendarAlt className="stat-icon" /></div>
             <h3>Total Events</h3>
             <p>{stats.events}</p>
           </div>
 
           <div className="admin-stat-card">
-            <img src={marketplaceIcon} alt="Marketplace" />
+            <div className="stat-icon-wrapper"><FaShoppingCart className="stat-icon" /></div>
             <h3>Marketplace Items</h3>
             <p>{stats.marketplace}</p>
           </div>
 
           <div className="admin-stat-card">
-            <img src={lostfoundIcon} alt="Lost & Found" />
+            <div className="stat-icon-wrapper"><FaSearch className="stat-icon" /></div>
             <h3>Lost & Found</h3>
             <p>{stats.lostfound}</p>
           </div>

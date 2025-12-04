@@ -4,7 +4,8 @@ import {
   getLostItems,
   getLostItemById,
   updateLostItem,
-  deleteLostItem
+  deleteLostItem,
+  claimItem
 } from "../controllers/lostFoundController.js";
 
 const router = express.Router();
@@ -21,7 +22,7 @@ router.post("/", createLostItem);
 
 /**
  * @route   GET /api/lostfound
- * @desc    Get all Lost & Found items
+ * @desc    Get all Lost & Found items (Filtered)
  */
 router.get("/", getLostItems);
 
@@ -36,6 +37,12 @@ router.get("/:id", getLostItemById);
  * @desc    Update Lost & Found item
  */
 router.put("/:id", updateLostItem);
+
+/**
+ * @route   PUT /api/lostfound/:id/claim
+ * @desc    Mark item as claimed/resolved
+ */
+router.put("/:id/claim", claimItem);
 
 /**
  * @route   DELETE /api/lostfound/:id

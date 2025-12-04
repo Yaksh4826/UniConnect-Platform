@@ -1,5 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { FaChartPie, FaUsers, FaCalendarAlt, FaShoppingCart, FaSearch } from "react-icons/fa";
 import "../../styles/AdminSidebar.css";
 
 export default function AdminSidebar() {
@@ -18,7 +19,7 @@ export default function AdminSidebar() {
             isActive ? "sidebar-link active" : "sidebar-link"
           }
         >
-          <span className="icon">📊</span> Dashboard
+          <span className="icon"><FaChartPie /></span> Dashboard
         </NavLink>
 
         <NavLink
@@ -27,7 +28,7 @@ export default function AdminSidebar() {
             isActive ? "sidebar-link active" : "sidebar-link"
           }
         >
-          <span className="icon">👤</span> Users
+          <span className="icon"><FaUsers /></span> Users
         </NavLink>
 
         <NavLink
@@ -36,7 +37,7 @@ export default function AdminSidebar() {
             isActive ? "sidebar-link active" : "sidebar-link"
           }
         >
-          <span className="icon">📅</span> Events
+          <span className="icon"><FaCalendarAlt /></span> Events
         </NavLink>
 
         <NavLink
@@ -45,7 +46,7 @@ export default function AdminSidebar() {
             isActive ? "sidebar-link active" : "sidebar-link"
           }
         >
-          <span className="icon">🛒</span> Marketplace
+          <span className="icon"><FaShoppingCart /></span> Marketplace
         </NavLink>
 
         <NavLink
@@ -54,7 +55,7 @@ export default function AdminSidebar() {
             isActive ? "sidebar-link active" : "sidebar-link"
           }
         >
-          <span className="icon">🔍</span> Lost & Found
+          <span className="icon"><FaSearch /></span> Lost & Found
         </NavLink>
 
       </nav>
